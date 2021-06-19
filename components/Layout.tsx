@@ -1,8 +1,9 @@
 import { ReactNode, useState } from 'react'
-import { Flex, Stack, Box, chakra } from "@chakra-ui/react";
+import { Flex, Box, chakra } from "@chakra-ui/react";
 import ConnectWallet from './ConnectWallet'
 import { ethers } from "ethers";
 import { Web3Provider } from '@ethersproject/providers'
+import NetworkErrorMessage from './NetworkErrorMessage'
 
 // where should this go?
 declare global {
@@ -58,11 +59,15 @@ export default function Layout({ children }: { children: ReactNode }) {
                             <chakra.span fontWeight="bold">{balance} ETH</chakra.span>
                         </Box>
                         : <ConnectWallet
-                            networkError={networkError}
                             connectWallet={connectWallet}
                         />}
                 </Box>
             </Flex>
+
+            {networkError &&
+                <NetworkErrorMessage
+                    message={networkError}
+                />}
 
             <Flex flexGrow={1} direction="column">
                 {children}

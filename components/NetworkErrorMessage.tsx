@@ -4,7 +4,6 @@ import {
     AlertIcon,
     AlertTitle,
     AlertDescription,
-    CloseButton
 } from "@chakra-ui/react"
 
 interface Props {
@@ -18,7 +17,6 @@ export default function NetworkErrorMessage({ message, dismiss }: Props) {
             <AlertIcon />
             <AlertTitle mr={2}>Warning!</AlertTitle>
             <AlertDescription>{message}</AlertDescription>
-            <CloseButton position="absolute" right="8px" top="8px" onClick={dismiss} />
         </Alert>
     )
 }
