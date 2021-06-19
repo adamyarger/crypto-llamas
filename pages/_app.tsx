@@ -1,9 +1,10 @@
-import type { AppProps } from 'next/app';
-import Head from 'next/head';
+import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import {
   ChakraProvider,
   extendTheme
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
+import Layout from 'components/Layout'
 
 const theme = extendTheme({
   fonts: {
@@ -22,7 +23,10 @@ function App({ Component, pageProps }: AppProps) {
           href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐰</text></svg>`}
         />
       </Head>
-      <Component {...pageProps} />
+
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ChakraProvider>
   );
 }
