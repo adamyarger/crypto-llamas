@@ -1,19 +1,6 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import { Container, chakra } from '@chakra-ui/react'
-import { ethers } from "ethers";
-
-// where should this go?
-declare global {
-  interface Window {
-    ethereum: any
-  }
-}
-
-// This is the Hardhat Network id, you might change it in the hardhat.config.js
-// Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
-// to use when deploying to other networks.
-const HARDHAT_NETWORK_ID = '31337';
 
 export default function Home() {
   return (

@@ -4,7 +4,7 @@ import { Box, Button } from '@chakra-ui/react'
 
 interface Props {
     connectWallet: React.MouseEventHandler
-    networkError: boolean
+    networkError: string
     dismiss?: React.MouseEventHandler<HTMLButtonElement>
 }
 
@@ -13,7 +13,7 @@ export default function ConnectWallet({ connectWallet, networkError, dismiss }: 
         <Box>
             {networkError &&
                 <NetworkErrorMessage
-                    message="Metamask network should be set to Localhost:8545"
+                    message={networkError}
                     dismiss={dismiss}
                 />}
             <Button onClick={connectWallet} colorScheme="purple">
