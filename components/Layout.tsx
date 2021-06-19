@@ -54,8 +54,15 @@ export default function Layout({ children }: { children: ReactNode }) {
                 </Box>
                 <Box ml="auto">
                     {provider ?
-                        <Box fontSize="lg">
-                            <chakra.span>Balance: </chakra.span>
+                        <Box
+                            fontSize="lg"
+                            border="1px solid"
+                            borderColor="gray.400"
+                            borderRadius="md"
+                            px="2"
+                            py="1"
+                        >
+                            <chakra.span>{selectedAddress.split('').splice(0, 8).join('')}... </chakra.span>
                             <chakra.span fontWeight="bold">{balance} ETH</chakra.span>
                         </Box>
                         : <ConnectWallet
@@ -64,10 +71,12 @@ export default function Layout({ children }: { children: ReactNode }) {
                 </Box>
             </Flex>
 
-            {networkError &&
+            {
+                networkError &&
                 <NetworkErrorMessage
                     message={networkError}
-                />}
+                />
+            }
 
             <Flex flexGrow={1} direction="column">
                 {children}
