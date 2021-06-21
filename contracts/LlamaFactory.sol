@@ -2,6 +2,8 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 contract LlamaFactory {
+    event NewLlama(uint256 llamaId, string name, uint256 dna);
+
     uint256 dnaDigits = 16;
     uint256 dnaModulus = dnaDigits**6;
 
@@ -14,6 +16,7 @@ contract LlamaFactory {
 
     function _createLlama(string memory _name, uint256 _dna) private {
         llamas.push(Llama(_name, _dna));
+        emit NewLlama(llamas.length - 1, _name, _dna);
     }
 
     function _generateRandomDna(string memory _str)
@@ -21,6 +24,12 @@ contract LlamaFactory {
         view
         returns (uint256)
     {
-        // code goes here
+        uint256 rand = uint256(keccak256(abi.encodePacked(_str)));
+        return rand % dnaModulus;
+    }
+
+    function createRandomLlama(string memory _name) public {
+        uint256 randDna = _generateRandomDna(_name);
+        _createLlama(_name, randDna);
     }
 }
