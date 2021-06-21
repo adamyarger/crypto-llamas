@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
     const LlamaFactory = await hre.ethers.getContractFactory('LlamaFactory')
-    const llamaFactory = await LlamaFactory.deploy('Hello llamas!')
+    const llamaFactory = await LlamaFactory.deploy()
 
     await llamaFactory.deployed()
 
