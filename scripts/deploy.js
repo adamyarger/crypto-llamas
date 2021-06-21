@@ -2,6 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
     const LlamaFactory = await hre.ethers.getContractFactory('LlamaFactory')
+    // in order to pass params to the contract contructor we pass them through deploy
     const llamaFactory = await LlamaFactory.deploy()
 
     await llamaFactory.deployed()

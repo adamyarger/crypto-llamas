@@ -5,6 +5,7 @@ import {
   extendTheme
 } from '@chakra-ui/react'
 import Layout from 'components/Layout'
+import { Web3Provider } from 'context/AppContext'
 
 const theme = extendTheme({
   fonts: {
@@ -24,9 +25,11 @@ function App({ Component, pageProps }: AppProps) {
         />
       </Head>
 
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Web3Provider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Web3Provider>
     </ChakraProvider>
   );
 }

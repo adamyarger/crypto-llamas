@@ -4,6 +4,7 @@ import ConnectWallet from './ConnectWallet'
 import { ethers } from "ethers";
 import { Web3Provider } from '@ethersproject/providers'
 import NetworkErrorMessage from './NetworkErrorMessage'
+import { useWeb3 } from 'context/AppContext'
 
 // where should this go?
 declare global {
@@ -20,7 +21,8 @@ const HARDHAT_NETWORK_ID = '31337';
 export default function Layout({ children }: { children: ReactNode }) {
     const [networkError, setNetworkError] = useState('')
     const [selectedAddress, setSelectedAddress] = useState('')
-    const [provider, setProvider] = useState<Web3Provider>()
+    // const [provider, setProvider] = useState<Web3Provider>()
+    const { provider, setProvider } = useWeb3()
     const [balance, setBalance] = useState<string>()
 
     const checkNetwork = () => {

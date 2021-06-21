@@ -1,8 +1,17 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import { Container, chakra } from '@chakra-ui/react'
+import LlamaFactory from 'artifacts/contracts/LlamaFactory.sol/LlamaFactory.json'
+import { ethers } from 'ethers';
+import { useWeb3 } from 'context/AppContext'
+
+const LLAMA_FACTORY_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
 
 export default function Home() {
+  const { provider } = useWeb3()
+  const llamaFactory = new ethers.Contract(LLAMA_FACTORY_ADDRESS, LlamaFactory.abi, provider);
+  console.log(provider)
+
   return (
     <div>
       <Head>
