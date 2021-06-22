@@ -52,9 +52,18 @@ export default function Home() {
   const getLlamas = async () => {
     const count = await llamaFactory.llamaCount()
     if (count.gt(0)) {
-      const _llamas = await llamaFactory.llamas(0)
-      console.log(_llamas)
-      setLlamas([_llamas])
+      // set state is more like a request than an immidiate function
+      // that means we cant iterate through and setState, we might need to do a promise all
+
+      for (let i = 0; i < count; i++) {
+        llamaFactory.llamas(i).then((res: any) => {
+          const obj = {
+            name: res.name,
+            dna: res.dna
+          }
+          setLlamas((prev) => [...prev, obj])
+        })
+      }
     }
   }
 
