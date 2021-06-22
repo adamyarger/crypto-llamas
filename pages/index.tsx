@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import Head from 'next/head'
 import LlamaFactory from 'artifacts/contracts/LlamaFactory.sol/LlamaFactory.json'
 import { ethers, providers } from 'ethers';
@@ -16,18 +16,29 @@ import contractAddresses from 'contract-addresses.json'
 // const LLAMA_FACTORY_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
 
 export default function Home() {
+  // add a onProvider event for when its ready
   const { provider } = useWeb3()
+  // const [llamaFactorySigner, setLlamaFactorySigner] = useState<ethers.Contract | undefined>()
   const [name, setName] = useState('')
   const [llamas, setLlamas] = useState<any[]>([])
 
-  const llamaFactory = new ethers.Contract(contractAddresses.LlamaFactory, LlamaFactory.abi, provider);
+  const llamaFactory = new ethers.Contract(
+    contractAddresses.LlamaFactory,
+    LlamaFactory.abi,
+    provider
+  );
+
+  const getFactoryContract = (provider: any) => {
+    const signer = provider.getSigner()
+    return llamaFactory.connect(signer)
+  }
 
   const createRandomLlama = async (name: string) => {
     // were changing the state with this so we need to use a signer
     // and connect them to the contract
-    const signer = provider.getSigner()
-    const llamaFactorySigner = llamaFactory.connect(signer)
-    await llamaFactorySigner.createRandomLlama(name)
+    // const signer = provider.getSigner()
+    const factorySigner = getFactoryContract(provider)
+    await factorySigner.createRandomLlama(name)
   }
 
   const handleLlamaForm = async (e: React.SyntheticEvent) => {
@@ -52,6 +63,22 @@ export default function Home() {
       getLlamas()
     }
   }, [provider])
+
+  // useMemo(() => {
+  //   let hasRan = false;
+
+  //   console.log(provider)
+  //   if (provider && llamaFactory && !hasRan) {
+  //     console.log('should run once')
+  //     hasRan = true
+
+  //     const factorySigner = getFactoryContract(provider)
+  //     // need to destroy this on unmount
+  //     factorySigner.on('NewLlama', (id, name, dna) => {
+  //       console.log(id, name, dna)
+  //     })
+  //   }
+  // }, [llamaFactory])
 
 
   // display llamas
@@ -91,7 +118,7 @@ export default function Home() {
         <chakra.div marginTop="8">
           <ul>
             {llamas.map((item, index) => (
-              <li>{item.name}</li>
+              <li key={index}>{item.name}</li>
             ))}
           </ul>
         </chakra.div>
