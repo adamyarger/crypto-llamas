@@ -46,7 +46,7 @@ export default function Home() {
 
   useEffect(() => {
     if (provider) {
-      // getLlamas()
+      getLlamas()
     }
   }, [provider])
 
