@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 import { Flex, Box, chakra } from "@chakra-ui/react";
 import ConnectWallet from './ConnectWallet'
 import { ethers } from "ethers";
@@ -45,8 +45,11 @@ export default function Layout({ children }: { children: ReactNode }) {
         const [selectedAddress] = await window.ethereum.enable()
         if (!checkNetwork()) return
         await initWallet(selectedAddress)
-        console.log(balance)
     }
+
+    useEffect(() => {
+        connectWallet()
+    }, [])
 
     return (
         <>

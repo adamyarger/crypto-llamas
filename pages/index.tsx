@@ -10,7 +10,14 @@ const LLAMA_FACTORY_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
 export default function Home() {
   const { provider } = useWeb3()
   const llamaFactory = new ethers.Contract(LLAMA_FACTORY_ADDRESS, LlamaFactory.abi, provider);
-  console.log(provider)
+
+  const createRandomLlama = async (name: string) => {
+    await llamaFactory.createRandomLlama(name)
+  }
+
+  // display llamas
+  // create new llama on form submit with name
+  // listen to llama created event to add a new llama
 
   return (
     <div>
