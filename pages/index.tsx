@@ -54,7 +54,6 @@ export default function Home() {
     if (count.gt(0)) {
       // set state is more like a request than an immidiate function
       // that means we cant iterate through and setState, we might need to do a promise all
-
       for (let i = 0; i < count; i++) {
         llamaFactory.llamas(i).then((res: any) => {
           const obj = {
