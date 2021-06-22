@@ -11,15 +11,16 @@ import {
   FormControl,
   FormLabel
 } from '@chakra-ui/react'
+import contractAddresses from 'contract-addresses.json'
 
-const LLAMA_FACTORY_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
+// const LLAMA_FACTORY_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
 
 export default function Home() {
   const { provider } = useWeb3()
   const [name, setName] = useState('')
   const [llamas, setLlamas] = useState([])
 
-  const llamaFactory = new ethers.Contract(LLAMA_FACTORY_ADDRESS, LlamaFactory.abi, provider);
+  const llamaFactory = new ethers.Contract(contractAddresses.LlamaFactory, LlamaFactory.abi, provider);
 
   const createRandomLlama = async (name: string) => {
     // were changing the state with this so we need to use a signer
