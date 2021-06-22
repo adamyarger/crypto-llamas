@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import LlamaFactory from 'artifacts/contracts/LlamaFactory.sol/LlamaFactory.json'
-import { ethers } from 'ethers';
+import { ethers, providers } from 'ethers';
 import { useWeb3 } from 'context/AppContext'
 import {
   Container,
@@ -12,11 +12,12 @@ import {
   FormLabel
 } from '@chakra-ui/react'
 
-const LLAMA_FACTORY_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+const LLAMA_FACTORY_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
 
 export default function Home() {
   const { provider } = useWeb3()
   const [name, setName] = useState('')
+  const [llamas, setLlamas] = useState([])
 
   const llamaFactory = new ethers.Contract(LLAMA_FACTORY_ADDRESS, LlamaFactory.abi, provider);
 
@@ -25,7 +26,6 @@ export default function Home() {
     // and connect them to the contract
     const signer = provider.getSigner()
     const llamaFactorySigner = llamaFactory.connect(signer)
-
     await llamaFactorySigner.createRandomLlama(name)
   }
 
@@ -37,10 +37,23 @@ export default function Home() {
     }
   }
 
+  const getLlamas = async () => {
+    const llamas = await llamaFactory.llamas(0)
+    console.log(llamas)
+    setLlamas(llamas)
+  }
+
+  useEffect(() => {
+    if (provider) {
+      // getLlamas()
+    }
+  }, [provider])
+
 
   // display llamas
   // create new llama on form submit with name
   // listen to llama created event to add a new llama
+  // show llama color changing on input change
 
 
   // event
