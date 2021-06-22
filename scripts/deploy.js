@@ -12,12 +12,12 @@ async function main() {
   saveContractAddress('LlamaFactory', llamaFactory)
 }
 
-function saveContractAddress(contract, name) {
-  const fs = requre('fs')
+function saveContractAddress(name, contract) {
+  const fs = require('fs')
 
   // this should do Object.assign
   fs.writeFileSync(
-    __dirname + '..contract-addresses.json',
+    __dirname + '/../contract-addresses.json',
     JSON.stringify({ [name]: contract.address }, undefined, 2)
   )
 }
