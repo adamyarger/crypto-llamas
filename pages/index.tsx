@@ -1,23 +1,53 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
-import { Container, chakra } from '@chakra-ui/react'
 import LlamaFactory from 'artifacts/contracts/LlamaFactory.sol/LlamaFactory.json'
 import { ethers } from 'ethers';
 import { useWeb3 } from 'context/AppContext'
+import {
+  Container,
+  chakra,
+  Button,
+  Input,
+  FormControl,
+  FormLabel
+} from '@chakra-ui/react'
 
 const LLAMA_FACTORY_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
 
 export default function Home() {
   const { provider } = useWeb3()
+  const [name, setName] = useState('')
+
   const llamaFactory = new ethers.Contract(LLAMA_FACTORY_ADDRESS, LlamaFactory.abi, provider);
 
   const createRandomLlama = async (name: string) => {
-    await llamaFactory.createRandomLlama(name)
+    // were changing the state with this so we need to use a signer
+    // and connect them to the contract
+    const signer = provider.getSigner()
+    const llamaFactorySigner = llamaFactory.connect(signer)
+
+    await llamaFactorySigner.createRandomLlama(name)
   }
+
+  const handleLlamaForm = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    console.log(e)
+    if (name) {
+      await createRandomLlama(name)
+    }
+  }
+
 
   // display llamas
   // create new llama on form submit with name
   // listen to llama created event to add a new llama
+
+
+  // event
+  // llamaFactory.on('NewLLama', (name, dna) => {
+  //   console.log(name, dna)
+  //   // add it to the js list
+  // });
 
   return (
     <div>
@@ -28,7 +58,18 @@ export default function Home() {
       </Head>
 
       <Container maxW="container.lg" mt="32">
-        <chakra.h1 fontSize="4xl">Lets Get Started</chakra.h1>
+        <chakra.h1 fontSize="4xl">Welcome to llama land!</chakra.h1>
+
+        <chakra.form mt="8" onSubmit={handleLlamaForm}>
+          <FormControl id="llama-name">
+            <FormLabel>Name</FormLabel>
+            <Input value={name} onChange={(e) => setName(e.target.value)} />
+          </FormControl>
+
+          <Button colorScheme="blue" mt="4" type="submit">
+            Create Llama
+          </Button>
+        </chakra.form>
       </Container>
     </div>
   )
