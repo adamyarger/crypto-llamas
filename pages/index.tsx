@@ -18,7 +18,7 @@ import contractAddresses from 'contract-addresses.json'
 export default function Home() {
   const { provider } = useWeb3()
   const [name, setName] = useState('')
-  const [llamas, setLlamas] = useState([])
+  const [llamas, setLlamas] = useState<any[]>([])
 
   const llamaFactory = new ethers.Contract(contractAddresses.LlamaFactory, LlamaFactory.abi, provider);
 
@@ -39,9 +39,12 @@ export default function Home() {
   }
 
   const getLlamas = async () => {
-    const llamas = await llamaFactory.llamas(0)
-    console.log(llamas)
-    setLlamas(llamas)
+    const count = await llamaFactory.llamaCount()
+    if (count.gt(0)) {
+      const _llamas = await llamaFactory.llamas(0)
+      console.log(_llamas)
+      setLlamas([_llamas])
+    }
   }
 
   useEffect(() => {
@@ -84,6 +87,14 @@ export default function Home() {
             Create Llama
           </Button>
         </chakra.form>
+
+        <chakra.div marginTop="8">
+          <ul>
+            {llamas.map((item, index) => (
+              <li>{item.name}</li>
+            ))}
+          </ul>
+        </chakra.div>
       </Container>
     </div>
   )

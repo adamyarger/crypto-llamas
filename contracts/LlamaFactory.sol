@@ -14,6 +14,10 @@ contract LlamaFactory {
 
     Llama[] public llamas;
 
+    function llamaCount() public view returns (uint256) {
+        return llamas.length;
+    }
+
     function _createLlama(string memory _name, uint256 _dna) private {
         llamas.push(Llama(_name, _dna));
         emit NewLlama(llamas.length - 1, _name, _dna);
