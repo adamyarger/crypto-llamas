@@ -76,6 +76,7 @@ export default function Home() {
     }
   }, [provider])
 
+  // count is a hack until we figure out why it gets fired on load
   let count = 0
   const onNewLlama = (id: string, name: string, dna: object) => {
     console.log('llama created ', id, llamas)
