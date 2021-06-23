@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, EffectCallback, useCallback } from 'react'
 import Head from 'next/head'
 import LlamaFactory from 'artifacts/contracts/LlamaFactory.sol/LlamaFactory.json'
 import { ethers, providers } from 'ethers';
@@ -21,6 +21,12 @@ export default function Home() {
   // const [llamaFactorySigner, setLlamaFactorySigner] = useState<ethers.Contract | undefined>()
   const [name, setName] = useState('')
   const [llamas, setLlamas] = useState<any[]>([])
+
+  // const factory = new ethers.Contract(
+  //   contractAddresses.LlamaFactory,
+  //   LlamaFactory.abi,
+  //   provider
+  // );
 
   const llamaFactory = new ethers.Contract(
     contractAddresses.LlamaFactory,
@@ -52,8 +58,6 @@ export default function Home() {
   const getLlamas = async () => {
     const count = await llamaFactory.llamaCount()
     if (count.gt(0)) {
-      // set state is more like a request than an immidiate function
-      // that means we cant iterate through and setState, we might need to do a promise all
       for (let i = 0; i < count; i++) {
         llamaFactory.llamas(i).then((res: any) => {
           const obj = {
@@ -72,34 +76,30 @@ export default function Home() {
     }
   }, [provider])
 
-  // useMemo(() => {
-  //   let hasRan = false;
+  let count = 0
+  const onNewLlama = (id: string, name: string, dna: object) => {
+    console.log('llama created ', id, llamas)
+    const obj = {
+      name: name,
+      dna: dna
+    }
+    if (count) {
+      setLlamas((prev) => [...prev, obj])
+    }
+    count++
+  }
 
-  //   console.log(provider)
-  //   if (provider && llamaFactory && !hasRan) {
-  //     console.log('should run once')
-  //     hasRan = true
+  useEffect(() => {
+    if (provider) {
+      const factorySigner = getFactoryContract(provider)
 
-  //     const factorySigner = getFactoryContract(provider)
-  //     // need to destroy this on unmount
-  //     factorySigner.on('NewLlama', (id, name, dna) => {
-  //       console.log(id, name, dna)
-  //     })
-  //   }
-  // }, [llamaFactory])
-
-
-  // display llamas
-  // create new llama on form submit with name
-  // listen to llama created event to add a new llama
-  // show llama color changing on input change
-
-
-  // event
-  // llamaFactory.on('NewLLama', (name, dna) => {
-  //   console.log(name, dna)
-  //   // add it to the js list
-  // });
+      // this is being triggered on reload for the most recently created
+      factorySigner.on('NewLlama', onNewLlama)
+      return () => {
+        factorySigner.off('NewLlama', onNewLlama)
+      }
+    }
+  }, [provider])
 
   return (
     <div>

@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
+import "hardhat/console.sol";
+
 contract LlamaFactory {
     event NewLlama(uint256 llamaId, string name, uint256 dna);
 
@@ -20,6 +22,7 @@ contract LlamaFactory {
 
     function _createLlama(string memory _name, uint256 _dna) private {
         llamas.push(Llama(_name, _dna));
+        console.log("CREATE LLAMA");
         emit NewLlama(llamas.length - 1, _name, _dna);
     }
 

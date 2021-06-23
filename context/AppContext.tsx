@@ -20,7 +20,6 @@ export function Web3Provider(props: any) {
     return <Web3Context.Provider value={value} {...props} />
 }
 
-// what does T = any do??
 export function useWeb3() {
     const context = useContext(Web3Context)
     if (context === undefined) {
