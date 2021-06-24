@@ -12,6 +12,14 @@ contract LlamaFactory {
     struct Llama {
         string name;
         uint256 dna;
+        // 32-bit limits us to 4 billion llamas
+        // ethereum only allows 500 million transactions per year, we should be good
+        uint32 pregnentWithId;
+        // add parents
+        // timestamp take up 64 bits
+        // uint64 birthTime;
+
+        uint64 cooldownTime;
     }
 
     Llama[] public llamas;
@@ -23,8 +31,10 @@ contract LlamaFactory {
         return llamas.length;
     }
 
-    function _createLlama(string memory _name, uint256 _dna) private {
-        llamas.push(Llama(_name, _dna));
+    function _createLlama(string memory _name, uint256 _dna) internal {
+        Llama memory _llama = Llama(_name, _dna, 0, 0);
+        llamas.push(_llama);
+
         uint256 id = llamas.length - 1;
         llamaToOwner[id] = msg.sender;
         ownerLlamaCount[msg.sender]++;
