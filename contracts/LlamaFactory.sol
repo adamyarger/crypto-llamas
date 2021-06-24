@@ -16,14 +16,20 @@ contract LlamaFactory {
 
     Llama[] public llamas;
 
+    mapping(uint256 => address) public llamaToOwner;
+    mapping(address => uint256) ownerLlamaCount;
+
     function llamaCount() public view returns (uint256) {
         return llamas.length;
     }
 
     function _createLlama(string memory _name, uint256 _dna) private {
         llamas.push(Llama(_name, _dna));
+        uint256 id = llamas.length - 1;
+        llamaToOwner[id] = msg.sender;
+        ownerLlamaCount[msg.sender]++;
+        emit NewLlama(id, _name, _dna);
         console.log("CREATE LLAMA");
-        emit NewLlama(llamas.length - 1, _name, _dna);
     }
 
     function _generateRandomDna(string memory _str)
@@ -36,6 +42,10 @@ contract LlamaFactory {
     }
 
     function createRandomLlama(string memory _name) public {
+        // only allow llama creation when you dont have one
+        // should change this to airdrop
+        // require goes in the public function to throw an error ASAP
+        require(ownerLlamaCount[msg.sender] == 0);
         uint256 randDna = _generateRandomDna(_name);
         _createLlama(_name, randDna);
     }

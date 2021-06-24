@@ -95,6 +95,7 @@ export default function Home() {
       const factorySigner = getFactoryContract(provider)
 
       // this is being triggered on reload for the most recently created
+      // see if it happens with a different listener
       factorySigner.on('NewLlama', onNewLlama)
       return () => {
         factorySigner.off('NewLlama', onNewLlama)
