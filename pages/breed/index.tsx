@@ -37,6 +37,11 @@ export default function Breed() {
         const contract = getBreedingContract(provider)
         console.log('breeding...')
 
+        try {
+            await contract.breedWith(0, 1)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     const getCount = async () => {

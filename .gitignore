@@ -38,3 +38,4 @@ node_modules
 #Hardhat files
 cache
 artifacts
+contract-addresses.json
