@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo, EffectCallback, useCallback } from 'react'
 import Head from 'next/head'
-import LlamaFactory from 'artifacts/contracts/LlamaFactory.sol/LlamaFactory.json'
-import { ethers, providers } from 'ethers';
 import { useWeb3 } from 'context/AppContext'
 import {
   Container,
@@ -11,40 +9,18 @@ import {
   FormControl,
   FormLabel
 } from '@chakra-ui/react'
-import contractAddresses from 'contract-addresses.json'
 import { useLlamaFactoryContract } from 'hooks/useContract'
 
 export default function Home() {
-  // add a onProvider event for when its ready
   const { provider } = useWeb3()
-  // const [llamaFactorySigner, setLlamaFactorySigner] = useState<ethers.Contract | undefined>()
   const [name, setName] = useState('')
   const [llamas, setLlamas] = useState<any[]>([])
   const llamaFactory = useLlamaFactoryContract()
 
-  // const llamaFactory = new ethers.Contract(
-  //   contractAddresses.LlamaFactory,
-  //   LlamaFactory.abi,
-  //   provider
-  // );
-
-  // const getFactoryContract = (provider: any) => {
-  //   const signer = provider.getSigner()
-  //   return llamaFactory.connect(signer)
-  // }
-
-  const createRandomLlama = async (name: string) => {
-    // were changing the state with this so we need to use a signer
-    // and connect them to the contract
-    // const signer = provider.getSigner()
-    // const factorySigner = getFactoryContract(provider)
-    await llamaFactory?.createRandomLlama(name)
-  }
-
   const handleLlamaForm = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     if (name) {
-      await createRandomLlama(name)
+      await llamaFactory?.createRandomLlama(name)
     }
   }
 
@@ -84,9 +60,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (provider) {
-      // const factorySigner = getFactoryContract(provider)
-
+    if (llamaFactory) {
       // this is being triggered on reload for the most recently created
       // see if it happens with a different listener
       llamaFactory?.on('NewLlama', onNewLlama)
@@ -94,7 +68,7 @@ export default function Home() {
         llamaFactory?.off('NewLlama', onNewLlama)
       }
     }
-  }, [provider])
+  }, [llamaFactory])
 
   return (
     <div>
