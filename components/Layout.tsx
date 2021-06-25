@@ -1,10 +1,11 @@
 import { ReactNode, useState, useEffect } from 'react'
-import { Flex, Box, chakra } from "@chakra-ui/react";
+import { Flex, Box, chakra, Link, Stack } from "@chakra-ui/react";
 import ConnectWallet from './ConnectWallet'
 import { ethers } from "ethers";
 import { Web3Provider } from '@ethersproject/providers'
 import NetworkErrorMessage from './NetworkErrorMessage'
 import { useWeb3 } from 'context/AppContext'
+import NextLink from 'next/link'
 
 // where should this go?
 declare global {
@@ -58,21 +59,32 @@ export default function Layout({ children }: { children: ReactNode }) {
                     crypto llamas
                 </Box>
                 <Box ml="auto">
-                    {provider ?
-                        <Box
-                            fontSize="lg"
-                            border="1px solid"
-                            borderColor="gray.400"
-                            borderRadius="md"
-                            px="2"
-                            py="1"
-                        >
-                            <chakra.span>{selectedAddress.split('').splice(0, 8).join('')}... </chakra.span>
-                            <chakra.span fontWeight="bold">{balance} ETH</chakra.span>
-                        </Box>
-                        : <ConnectWallet
-                            connectWallet={connectWallet}
-                        />}
+                    <Stack direction={['column', 'row']} alignItems="center" spacing="8">
+                        <NextLink href="/" passHref>
+                            <Link>Home</Link>
+                        </NextLink>
+
+                        <NextLink href="/breed" passHref>
+                            <Link>Breed</Link>
+                        </NextLink>
+
+
+                        {provider ?
+                            <Box
+                                fontSize="lg"
+                                border="1px solid"
+                                borderColor="gray.400"
+                                borderRadius="md"
+                                px="2"
+                                py="1"
+                            >
+                                <chakra.span>{selectedAddress.split('').splice(0, 8).join('')}... </chakra.span>
+                                <chakra.span fontWeight="bold">{balance} ETH</chakra.span>
+                            </Box>
+                            : <ConnectWallet
+                                connectWallet={connectWallet}
+                            />}
+                    </Stack>
                 </Box>
             </Flex>
 

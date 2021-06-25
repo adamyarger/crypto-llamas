@@ -22,12 +22,6 @@ export default function Home() {
   const [name, setName] = useState('')
   const [llamas, setLlamas] = useState<any[]>([])
 
-  // const factory = new ethers.Contract(
-  //   contractAddresses.LlamaFactory,
-  //   LlamaFactory.abi,
-  //   provider
-  // );
-
   const llamaFactory = new ethers.Contract(
     contractAddresses.LlamaFactory,
     LlamaFactory.abi,
