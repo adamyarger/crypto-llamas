@@ -55,7 +55,10 @@ contract LlamaFactory {
         // only allow llama creation when you dont have one
         // should change this to airdrop
         // require goes in the public function to throw an error ASAP
-        require(ownerLlamaCount[msg.sender] == 0);
+        require(
+            ownerLlamaCount[msg.sender] < 100,
+            "You get one free llama DUDE!"
+        );
         uint256 randDna = _generateRandomDna(_name);
         _createLlama(_name, randDna);
     }

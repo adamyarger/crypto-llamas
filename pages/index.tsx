@@ -49,7 +49,6 @@ export default function Home() {
 
   const handleLlamaForm = async (e: React.SyntheticEvent) => {
     e.preventDefault()
-    console.log(e)
     if (name) {
       await createRandomLlama(name)
     }

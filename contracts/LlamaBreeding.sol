@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import "./LlamaFactory.sol";
+import "hardhat/console.sol";
 
 contract LlamaBreeding is LlamaFactory {
     /// Pregnant event fired when 2 llamas succesfully breed and
@@ -64,6 +65,8 @@ contract LlamaBreeding is LlamaFactory {
 
         // remove pregnent with id
         delete female.pregnentWithId;
+
+        console.log("Ite worked mmmmm");
 
         return llamas.length - 1;
     }
