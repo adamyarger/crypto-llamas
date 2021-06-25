@@ -12,8 +12,7 @@ import {
   FormLabel
 } from '@chakra-ui/react'
 import contractAddresses from 'contract-addresses.json'
-
-// const LLAMA_FACTORY_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
+import { useLlamaFactoryContract } from 'hooks/useContract'
 
 export default function Home() {
   // add a onProvider event for when its ready
@@ -21,24 +20,25 @@ export default function Home() {
   // const [llamaFactorySigner, setLlamaFactorySigner] = useState<ethers.Contract | undefined>()
   const [name, setName] = useState('')
   const [llamas, setLlamas] = useState<any[]>([])
+  const llamaFactory = useLlamaFactoryContract()
 
-  const llamaFactory = new ethers.Contract(
-    contractAddresses.LlamaFactory,
-    LlamaFactory.abi,
-    provider
-  );
+  // const llamaFactory = new ethers.Contract(
+  //   contractAddresses.LlamaFactory,
+  //   LlamaFactory.abi,
+  //   provider
+  // );
 
-  const getFactoryContract = (provider: any) => {
-    const signer = provider.getSigner()
-    return llamaFactory.connect(signer)
-  }
+  // const getFactoryContract = (provider: any) => {
+  //   const signer = provider.getSigner()
+  //   return llamaFactory.connect(signer)
+  // }
 
   const createRandomLlama = async (name: string) => {
     // were changing the state with this so we need to use a signer
     // and connect them to the contract
     // const signer = provider.getSigner()
-    const factorySigner = getFactoryContract(provider)
-    await factorySigner.createRandomLlama(name)
+    // const factorySigner = getFactoryContract(provider)
+    await llamaFactory?.createRandomLlama(name)
   }
 
   const handleLlamaForm = async (e: React.SyntheticEvent) => {
@@ -49,10 +49,10 @@ export default function Home() {
   }
 
   const getLlamas = async () => {
-    const count = await llamaFactory.llamaCount()
+    const count = await llamaFactory?.llamaCount()
     if (count.gt(0)) {
       for (let i = 0; i < count; i++) {
-        llamaFactory.llamas(i).then((res: any) => {
+        llamaFactory?.llamas(i).then((res: any) => {
           const obj = {
             name: res.name,
             dna: res.dna
@@ -65,7 +65,6 @@ export default function Home() {
 
   useEffect(() => {
     if (provider) {
-      console.log(provider)
       getLlamas()
     }
   }, [provider])
@@ -86,13 +85,13 @@ export default function Home() {
 
   useEffect(() => {
     if (provider) {
-      const factorySigner = getFactoryContract(provider)
+      // const factorySigner = getFactoryContract(provider)
 
       // this is being triggered on reload for the most recently created
       // see if it happens with a different listener
-      factorySigner.on('NewLlama', onNewLlama)
+      llamaFactory?.on('NewLlama', onNewLlama)
       return () => {
-        factorySigner.off('NewLlama', onNewLlama)
+        llamaFactory?.off('NewLlama', onNewLlama)
       }
     }
   }, [provider])

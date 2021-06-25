@@ -19,7 +19,7 @@ export function useContract(
 
   // use memo since we dont want to reinitiate the contract constructuor on eveery change
   return useMemo(() => {
-    if (!address || !ABI) return null
+    if (!address || !ABI || !provider) return null
     const contract = new ethers.Contract(address, ABI, provider)
 
     if (withSigner) {
@@ -28,7 +28,7 @@ export function useContract(
     }
 
     return contract
-  }, [address, ABI, withSigner])
+  }, [provider, address, ABI, withSigner])
 }
 
 // useMemo is for memoizing values
