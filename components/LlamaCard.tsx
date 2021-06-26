@@ -4,11 +4,17 @@ interface Props {
     id?: number
     coolDownTime?: number
     dna?: string
-    onClick?: MouseEvent
+    onClick?: (id: number | undefined) => {}
     selectable?: boolean
 }
 
-export default function LlamaCard({ selectable }: Props) {
+export default function LlamaCard({ selectable, onClick, id }: Props) {
+    const handleClick = () => {
+        if (typeof onClick === 'function') {
+            onClick(id)
+        }
+    }
+
     return (
         <Box
             className=".llama-card"
@@ -23,6 +29,7 @@ export default function LlamaCard({ selectable }: Props) {
                     transition: 'border-color 300ms ease'
                 }
             }}
+            onClick={handleClick}
         >
             <Image
                 htmlWidth="100%"
