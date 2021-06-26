@@ -4,7 +4,7 @@ import { Box, Container, Button, Heading } from '@chakra-ui/react'
 import { useLlamaBreedingContract, useLlamaFactoryContract } from 'hooks/useContract'
 
 export default function Breed() {
-    // cant get counr from breeding contract since the state is in the factory contract??
+    // cant get count from breeding contract since the state is in the factory contract??
     const llamaBreeding = useLlamaBreedingContract()
     const llamaFactory = useLlamaFactoryContract()
     const [count, setCount] = useState(0)
@@ -39,7 +39,10 @@ export default function Breed() {
         <Container maxW="container.lg" mt="32">
             <Heading as="h1" size="2xl" mb="16">Breed</Heading>
             <Box>
-                {/* Count: {count} */}
+                <Box>
+                    Count: {count}
+                </Box>
+
                 <Button colorScheme="purple" disabled={disableBreeding()} onClick={breed}>
                     Breed Me
                 </Button>

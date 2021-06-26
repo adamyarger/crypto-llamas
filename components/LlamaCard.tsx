@@ -1,12 +1,28 @@
 import { Box, Image } from '@chakra-ui/react'
 
-export default function LlamaCard() {
+interface Props {
+    id?: number
+    coolDownTime?: number
+    dna?: string
+    onClick?: MouseEvent
+    selectable?: boolean
+}
+
+export default function LlamaCard({ selectable }: Props) {
     return (
         <Box
+            className=".llama-card"
             border="2px solid"
             borderColor="gray.300"
             borderRadius="md"
             padding="6"
+            cursor={selectable ? 'pointer' : 'default'}
+            sx={{
+                ':hover': {
+                    borderColor: 'purple.500',
+                    transition: 'border-color 300ms ease'
+                }
+            }}
         >
             <Image
                 htmlWidth="100%"
