@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Flex, Grid, Container, Button, Heading, background } from '@chakra-ui/react'
 import { useLlamaBreedingContract, useLlamaFactoryContract } from 'hooks/useContract'
+import LlamaSelectModal from 'components/LlamaSelectModal'
+import {
+  Box,
+  Flex,
+  Grid,
+  Container,
+  Button,
+  Heading,
+  background,
+  useDisclosure
+} from '@chakra-ui/react'
 
 function BreedCard({ title, subtitle, onClick }: { title: string, subtitle: string, onClick: () => void }) {
   return (
@@ -41,6 +51,7 @@ export default function Breed() {
   const llamaBreeding = useLlamaBreedingContract()
   const llamaFactory = useLlamaFactoryContract()
   const [count, setCount] = useState(0)
+  const { isOpen, onClose, onOpen } = useDisclosure()
 
   const disableBreeding = () => {
     return count < 2
@@ -58,6 +69,7 @@ export default function Breed() {
 
   const selectLlama = (sex: string) => {
     console.log('select', sex)
+    onOpen()
   }
 
   const getCount = async () => {
@@ -73,32 +85,39 @@ export default function Breed() {
   }, [llamaBreeding])
 
   return (
-    <Container maxW="container.md" mt="32">
-      <Box>
-        <Box textAlign="center">
-          <Heading as="h1" size="xl" mb="4">Breed Llamas</Heading>
-          <Box fontSize="xl" color="gray.500">
-            Stand back, these llamas are about to get frisky
+    <>
+      <Container maxW="container.md" mt="32">
+        <Box>
+          <Box textAlign="center">
+            <Heading as="h1" size="xl" mb="4">Breed Llamas</Heading>
+            <Box fontSize="xl" color="gray.500">
+              Stand back, these llamas are about to get frisky
+            </Box>
           </Box>
-        </Box>
 
-        <Grid templateColumns="repeat(2, 1fr)" gap={12} mt="16">
-          <BreedCard
-            title="Female"
-            subtitle="This llama is about to be preggers"
-            onClick={() => selectLlama('female')}
-          />
-          <BreedCard
-            title="Male"
-            subtitle="This llama will be the steer"
-            onClick={() => selectLlama('male')}
-          />
-        </Grid>
+          <Grid templateColumns="repeat(2, 1fr)" gap={12} mt="16">
+            <BreedCard
+              title="Female"
+              subtitle="This llama is about to be preggers"
+              onClick={() => selectLlama('female')}
+            />
+            <BreedCard
+              title="Male"
+              subtitle="This llama will be the steer"
+              onClick={() => selectLlama('male')}
+            />
+          </Grid>
 
-        {/* <Button colorScheme="purple" disabled={disableBreeding()} onClick={breed}>
+          {/* <Button colorScheme="purple" disabled={disableBreeding()} onClick={breed}>
                     Breed Me
                 </Button> */}
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+
+      <LlamaSelectModal
+        isOpen={isOpen}
+        onClose={onClose}
+      />
+    </>
   )
 }
