@@ -24,10 +24,10 @@ export default function LlamaCard({ selectable, onClick, id }: Props) {
             padding="6"
             cursor={selectable ? 'pointer' : 'default'}
             sx={{
-                ':hover': {
+                ':hover': selectable ? {
                     borderColor: 'purple.500',
                     transition: 'border-color 300ms ease'
-                }
+                } : ''
             }}
             onClick={handleClick}
         >
