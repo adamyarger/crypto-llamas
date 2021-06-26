@@ -51,7 +51,7 @@ export default function MyLlamas() {
         </Box>
       </Flex>
 
-      <Grid mt="12" display="grid" templateColumns="repeat(4, 1fr)" gap={6}>
+      <Grid mt="12" templateColumns="repeat(4, 1fr)" gap={6}>
         {llamas.map((item, index) => (
           <LlamaCard key={index}></LlamaCard>
         ))}

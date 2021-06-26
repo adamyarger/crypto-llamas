@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -5,18 +6,38 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-  ModalProps
+  ModalProps,
+  Grid
 } from "@chakra-ui/react"
 import LlamaCard from 'components/LlamaCard'
+import { useLlamaList } from 'hooks/useLlamaList'
 
 interface Props {
   isOpen: boolean
-  onClose: () => void
+  onClose: () => void,
+  excludeId?: boolean // exlude a llama if its already been selected
+  onSelect: (id: number | undefined) => {}
 }
 
-export default function LlamaSelectModal({ isOpen, onClose }: Props) {
+export default function LlamaSelectModal({ isOpen, onClose, onSelect }: Props) {
   // extract get llamas call to a reusable function
   // make it a hook
+  const { llamas, getLlamasByOwner, setLlamas } = useLlamaList()
+
+  const onOpen = () => {
+    console.log('open')
+    getLlamasByOwner()
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      onOpen()
+    }
+
+    return () => {
+      setLlamas([])
+    }
+  }, [isOpen])
 
   return (
     <Modal
@@ -27,10 +48,19 @@ export default function LlamaSelectModal({ isOpen, onClose }: Props) {
     >
       <ModalOverlay />
       <ModalContent maxW="760px">
-        <ModalHeader>Modal Title</ModalHeader>
+        <ModalHeader>Select a llama</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          select here
+          <Grid templateColumns="repeat(2, 1fr)" gap={6} mb="6">
+            {llamas.map((_, index) => (
+              <LlamaCard
+                selectable
+                id={index}
+                key={index}
+                onClick={onSelect}
+              />
+            ))}
+          </Grid>
         </ModalBody>
       </ModalContent>
     </Modal>

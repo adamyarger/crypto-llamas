@@ -4,7 +4,7 @@ interface Props {
   id?: number
   coolDownTime?: number
   dna?: string
-  onClick?: (id: number | undefined) => {}
+  onClick?: (id: number) => {}
   selectable?: boolean
 }
 
