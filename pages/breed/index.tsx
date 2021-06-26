@@ -1,59 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Container, Button, Heading } from '@chakra-ui/react'
-import { useWeb3 } from 'context/AppContext'
-import { ethers } from 'ethers'
-import LlamaFactory from 'artifacts/contracts/LlamaFactory.sol/LlamaFactory.json'
-import LlamaBreeding from 'artifacts/contracts/LlamaBreeding.sol/LlamaBreeding.json'
-import contractAddresses from 'contract-addresses.json'
+
+import { useLlamaBreedingContract, useLlamaFactoryContract } from 'hooks/useContract'
 
 export default function Breed() {
-    const addresses: any = contractAddresses
-    const { provider } = useWeb3()
+    // cant get counr from breeding contract since the state is in the factory contract??
+    const llamaBreeding = useLlamaBreedingContract()
+    const llamaFactory = useLlamaFactoryContract()
     const [count, setCount] = useState(0)
 
     const disableBreeding = () => {
         return count < 2
     }
 
-    // create hook for getting specific contract objects
-    const llamaFactory = new ethers.Contract(
-        addresses.LlamaFactory,
-        LlamaFactory.abi,
-        provider
-    );
-
-    const llamaBreeding = new ethers.Contract(
-        addresses.LlamaBreeding,
-        LlamaBreeding.abi,
-        provider
-    )
-
-    const getBreedingContract = (provider: any) => {
-        const signer = provider.getSigner()
-        return llamaBreeding.connect(signer)
-    }
-
     const breed = async () => {
-        const contract = getBreedingContract(provider)
         console.log('breeding...')
 
         try {
-            await contract.breedWith(0, 1)
+            await llamaBreeding?.breedWith(0, 1)
         } catch (error) {
             console.error(error)
         }
     }
 
     const getCount = async () => {
-        const _count = await llamaFactory.llamaCount()
+        const _count = await llamaFactory?.llamaCount()
+        console.log(llamaBreeding)
         setCount(_count.toNumber())
     }
 
     useEffect(() => {
-        if (provider) {
+        if (llamaBreeding) {
             getCount()
         }
-    }, [provider])
+    }, [llamaBreeding])
 
     return (
         <Container maxW="container.lg" mt="32">
