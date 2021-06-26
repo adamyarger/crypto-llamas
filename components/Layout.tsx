@@ -21,8 +21,7 @@ const HARDHAT_NETWORK_ID = '31337';
 
 export default function Layout({ children }: { children: ReactNode }) {
     const [networkError, setNetworkError] = useState('')
-    const [selectedAddress, setSelectedAddress] = useState('')
-    const { provider, setProvider } = useWeb3()
+    const { provider, setProvider, address, setAddress } = useWeb3()
     const [balance, setBalance] = useState<string>()
 
     const checkNetwork = () => {
@@ -34,7 +33,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     }
 
     const initWallet = async (userAddress: string) => {
-        setSelectedAddress(userAddress)
+        setAddress(userAddress)
         const prov = new ethers.providers.Web3Provider(window.ethereum)
         setProvider(prov)
         const balance = await prov.getBalance(userAddress)
@@ -77,7 +76,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                                 px="2"
                                 py="1"
                             >
-                                <chakra.span>{selectedAddress.split('').splice(0, 8).join('')}... </chakra.span>
+                                <chakra.span>{address.split('').splice(0, 8).join('')}... </chakra.span>
                                 <chakra.span fontWeight="bold">{balance} ETH</chakra.span>
                             </Box>
                             : <ConnectWallet

@@ -11,12 +11,18 @@ import { Web3Provider as Web3ProviderType } from '@ethersproject/providers'
 // }
 
 const Web3Context = createContext<
-    { provider: Web3ProviderType, setProvider: Function } | undefined
+    {
+        provider: Web3ProviderType,
+        setProvider: Function,
+        address: string,
+        setAddress: Function
+    } | undefined
 >(undefined)
 
 export function Web3Provider(props: any) {
     const [provider, setProvider] = useState<Web3ProviderType>()
-    const value = { provider, setProvider }
+    const [address, setAddress] = useState('')
+    const value = { provider, setProvider, address, setAddress }
     return <Web3Context.Provider value={value} {...props} />
 }
 

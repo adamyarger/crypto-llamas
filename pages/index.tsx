@@ -41,6 +41,7 @@ export default function Home() {
 
   useEffect(() => {
     if (provider) {
+      console.log(provider.getSigner())
       getLlamas()
     }
   }, [provider])
