@@ -61,15 +61,18 @@ export default function Breed() {
   const [femaleId, setFemaleId] = useState<number | undefined>()
   const [activeSex, setActiveSex] = useState('')
 
-  const disableBreeding = () => {
-    return count < 2
+  // TODO: get llamas in this component, then we can use a computer property to get the selected llams
+  // pass in the list as a prop, this is like a select component in element ui, you pass in the options
+
+  const allowBreeding = () => {
+    return maleId !== undefined && femaleId !== undefined
   }
 
   const breed = async () => {
     console.log('breeding...')
 
     try {
-      await llamaBreeding?.breedWith(0, 1)
+      await llamaBreeding?.breedWith(maleId, femaleId)
     } catch (error) {
       console.error(error)
     }
@@ -129,9 +132,11 @@ export default function Breed() {
             />
           </Grid>
 
-          {/* <Button colorScheme="purple" disabled={disableBreeding()} onClick={breed}>
-                    Breed Me
-                </Button> */}
+          <Box mt="8" display="flex" justifyContent="center">
+            <Button colorScheme="purple" disabled={!allowBreeding()} onClick={breed}>
+              Ok, give them some privacy
+            </Button>
+          </Box>
         </Box>
       </Container>
 
