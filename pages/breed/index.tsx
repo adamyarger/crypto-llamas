@@ -12,6 +12,7 @@ import {
   background,
   useDisclosure
 } from '@chakra-ui/react'
+import { useLlamaList } from 'hooks/useLlamaList'
 
 function BreedCard({ title, subtitle, onClick, activeId }: { title: string, subtitle: string, onClick: () => void, activeId?: number }) {
   return (
@@ -38,6 +39,7 @@ function BreedCard({ title, subtitle, onClick, activeId }: { title: string, subt
         ><Box
           color="gray.600"
           fontWeight="bold"
+          textAlign="center"
           sx={{
             '.breed-select:hover &': {
               color: "purple.500"
@@ -61,12 +63,18 @@ export default function Breed() {
   const [femaleId, setFemaleId] = useState<number | undefined>()
   const [activeSex, setActiveSex] = useState('')
 
+  const { llamas, getLlamasByOwner, setLlamas } = useLlamaList()
+
   // TODO: get llamas in this component, then we can use a computer property to get the selected llams
   // pass in the list as a prop, this is like a select component in element ui, you pass in the options
 
   const allowBreeding = () => {
     return maleId !== undefined && femaleId !== undefined
   }
+
+  const llamaOptions = llamas.filter(item => {
+    return item.id !== maleId && item.id !== femaleId
+  })
 
   const breed = async () => {
     console.log('breeding...')
@@ -103,6 +111,11 @@ export default function Breed() {
   useEffect(() => {
     if (llamaBreeding) {
       getCount()
+      getLlamasByOwner()
+    }
+
+    return () => {
+      setLlamas([])
     }
   }, [llamaBreeding])
 
@@ -144,6 +157,7 @@ export default function Breed() {
         isOpen={isOpen}
         onClose={onClose}
         onSelect={onLlamaSelect}
+        llamas={llamaOptions}
       />
     </>
   )

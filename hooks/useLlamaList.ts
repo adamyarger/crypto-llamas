@@ -14,7 +14,8 @@ export function useLlamaList() {
         llamaFactory?.llamas(i).then((res: any) => {
           const obj = {
             name: res.name,
-            dna: res.dna
+            dna: res.dna,
+            id: i
           }
           setLlamas((prev) => [...prev, obj])
         })

@@ -10,33 +10,17 @@ import {
   Grid
 } from "@chakra-ui/react"
 import LlamaCard from 'components/LlamaCard'
-import { useLlamaList } from 'hooks/useLlamaList'
+
 
 interface Props {
   isOpen: boolean
   onClose: () => void,
   excludeId?: boolean // exlude a llama if its already been selected
-  onSelect: (id: number) => void
+  onSelect: (id: number) => void,
+  llamas: any[]
 }
 
-export default function LlamaSelectModal({ isOpen, onClose, onSelect }: Props) {
-  const { llamas, getLlamasByOwner, setLlamas } = useLlamaList()
-
-  const onOpen = () => {
-    console.log('open')
-    getLlamasByOwner()
-  }
-
-  useEffect(() => {
-    if (isOpen) {
-      onOpen()
-    }
-
-    return () => {
-      setLlamas([])
-    }
-  }, [isOpen])
-
+export default function LlamaSelectModal({ isOpen, onClose, onSelect, llamas }: Props) {
   return (
     <Modal
       isCentered
