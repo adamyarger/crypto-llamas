@@ -37,6 +37,9 @@ contract LlamaFactory {
 
         uint256 id = llamas.length - 1;
         llamaToOwner[id] = msg.sender;
+
+        console.log(id, llamaToOwner[id]);
+
         ownerLlamaCount[msg.sender]++;
         emit NewLlama(id, _name, _dna);
         console.log("CREATE LLAMA");

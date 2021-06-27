@@ -61,6 +61,17 @@ export default function Breed() {
   const [activeSex, setActiveSex] = useState('')
   const { llamas, getLlamasByOwner, setLlamas } = useLlamaList()
 
+  const factory = useLlamaFactoryContract()
+
+  useEffect(() => {
+    if (llamaBreeding) {
+      // how does ingeritence of contracts work???
+      console.log(llamaBreeding.llamaToOwner(0).then((res: any) => {
+        console.log(res)
+      }))
+    }
+  }, [llamaBreeding])
+
   const allowBreeding = () => {
     return maleId !== undefined && femaleId !== undefined
   }
@@ -70,7 +81,7 @@ export default function Breed() {
   })
 
   const breed = async () => {
-    console.log('breeding...')
+    console.log('breeding...', maleId, femaleId)
 
     try {
       await llamaBreeding?.breedWith(maleId, femaleId)

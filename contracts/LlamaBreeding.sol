@@ -31,7 +31,8 @@ contract LlamaBreeding is LlamaFactory {
 
     function breedWith(uint256 _femaleId, uint256 _maleId) public {
         // make sure the caller owns the female, since their the ones who get the new llama
-        console.log(llamaToOwner[_femaleId], msg.sender);
+        console.log("female id: ", _femaleId, "maleId: ", _maleId);
+        console.log(llamaToOwner[uint256(1)], msg.sender);
         require(
             llamaToOwner[_femaleId] == msg.sender,
             "female does not match sender address"
