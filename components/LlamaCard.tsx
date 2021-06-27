@@ -4,13 +4,13 @@ interface Props {
   id?: number
   coolDownTime?: number
   dna?: string
-  onClick?: (id: number) => {}
+  onClick?: (id: number) => void
   selectable?: boolean
 }
 
 export default function LlamaCard({ selectable, onClick, id }: Props) {
   const handleClick = () => {
-    if (typeof onClick === 'function') {
+    if (typeof onClick === 'function' && id) {
       onClick(id)
     }
   }

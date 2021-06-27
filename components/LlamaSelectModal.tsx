@@ -16,12 +16,10 @@ interface Props {
   isOpen: boolean
   onClose: () => void,
   excludeId?: boolean // exlude a llama if its already been selected
-  onSelect: (id: number | undefined) => {}
+  onSelect: (id: number) => void
 }
 
 export default function LlamaSelectModal({ isOpen, onClose, onSelect }: Props) {
-  // extract get llamas call to a reusable function
-  // make it a hook
   const { llamas, getLlamasByOwner, setLlamas } = useLlamaList()
 
   const onOpen = () => {

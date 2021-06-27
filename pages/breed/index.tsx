@@ -52,6 +52,9 @@ export default function Breed() {
   const llamaFactory = useLlamaFactoryContract()
   const [count, setCount] = useState(0)
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const [maleId, setMaleId] = useState<number | undefined>()
+  const [femaleId, setFemaleId] = useState<number | undefined>()
+  const [activeSex, setActiveSex] = useState('')
 
   const disableBreeding = () => {
     return count < 2
@@ -67,9 +70,20 @@ export default function Breed() {
     }
   }
 
-  const selectLlama = (sex: string) => {
+  const openSelectModal = (sex: string) => {
     console.log('select', sex)
+    setActiveSex(sex)
     onOpen()
+  }
+
+  const onLlamaSelect = (id: number | undefined) => {
+    console.log(id)
+    if (activeSex === 'MALE') {
+      setMaleId(id)
+    } else {
+      setFemaleId(id)
+    }
+    onClose()
   }
 
   const getCount = async () => {
@@ -96,15 +110,17 @@ export default function Breed() {
           </Box>
 
           <Grid templateColumns="repeat(2, 1fr)" gap={12} mt="16">
-            <BreedCard
-              title="Female"
-              subtitle="This llama is about to be preggers"
-              onClick={() => selectLlama('female')}
-            />
+            {femaleId
+              ? <div>its picker</div>
+              : <BreedCard
+                title="Female"
+                subtitle="This llama is about to be preggers"
+                onClick={() => openSelectModal('FEMALE')}
+              />}
             <BreedCard
               title="Male"
               subtitle="This llama will be the steer"
-              onClick={() => selectLlama('male')}
+              onClick={() => openSelectModal('MALE')}
             />
           </Grid>
 
@@ -117,6 +133,7 @@ export default function Breed() {
       <LlamaSelectModal
         isOpen={isOpen}
         onClose={onClose}
+        onSelect={onLlamaSelect}
       />
     </>
   )
