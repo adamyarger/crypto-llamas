@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLlamaBreedingContract, useLlamaFactoryContract } from 'hooks/useContract'
 import LlamaSelectModal from 'components/LlamaSelectModal'
+import LlamaCard from 'components/LlamaCard'
 import {
   Box,
   Flex,
@@ -12,25 +13,29 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 
-function BreedCard({ title, subtitle, onClick }: { title: string, subtitle: string, onClick: () => void }) {
+function BreedCard({ title, subtitle, onClick, activeId }: { title: string, subtitle: string, onClick: () => void, activeId?: number }) {
   return (
-    <Box textAlign="center" onClick={() => onClick()}>
-      <Box fontSize="lg" fontWeight="bold" mb="1">{title}</Box>
-      <Box mb="4">{subtitle}</Box>
-      <Box
-        className="breed-select"
-        border="2px dotted"
-        borderColor="gray.300"
-        backgroundColor="gray.100"
-        borderRadius="md"
-        py="32"
-        cursor="pointer"
-        transition="border .2s"
-        _hover={{
-          borderColor: "purple.500"
-        }}
-      >
-        <Box
+    <Box onClick={() => onClick()}>
+      <Box textAlign="center">
+        <Box fontSize="lg" fontWeight="bold" mb="1">{title}</Box>
+        <Box mb="4">{subtitle}</Box>
+      </Box>
+
+      {activeId !== undefined
+        ? <LlamaCard selectable />
+        : <Box
+          className="breed-select"
+          border="2px dotted"
+          borderColor="gray.300"
+          backgroundColor="gray.100"
+          borderRadius="md"
+          py="32"
+          cursor="pointer"
+          transition="border .2s"
+          _hover={{
+            borderColor: "purple.500"
+          }}
+        ><Box
           color="gray.600"
           fontWeight="bold"
           sx={{
@@ -39,9 +44,9 @@ function BreedCard({ title, subtitle, onClick }: { title: string, subtitle: stri
             }
           }}
         >
-          Select your llama
-        </Box>
-      </Box>
+            Select your llama
+          </Box>
+        </Box>}
     </Box>
   )
 }
@@ -71,13 +76,13 @@ export default function Breed() {
   }
 
   const openSelectModal = (sex: string) => {
-    console.log('select', sex)
     setActiveSex(sex)
     onOpen()
   }
 
   const onLlamaSelect = (id: number | undefined) => {
-    console.log(id)
+    console.log('SELECT', id)
+
     if (activeSex === 'MALE') {
       setMaleId(id)
     } else {
@@ -110,16 +115,16 @@ export default function Breed() {
           </Box>
 
           <Grid templateColumns="repeat(2, 1fr)" gap={12} mt="16">
-            {femaleId
-              ? <div>its picker</div>
-              : <BreedCard
-                title="Female"
-                subtitle="This llama is about to be preggers"
-                onClick={() => openSelectModal('FEMALE')}
-              />}
+            <BreedCard
+              title="Female"
+              subtitle="This llama is about to be preggers"
+              activeId={femaleId}
+              onClick={() => openSelectModal('FEMALE')}
+            />
             <BreedCard
               title="Male"
               subtitle="This llama will be the steer"
+              activeId={maleId}
               onClick={() => openSelectModal('MALE')}
             />
           </Grid>

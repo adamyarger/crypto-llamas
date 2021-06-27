@@ -10,7 +10,7 @@ interface Props {
 
 export default function LlamaCard({ selectable, onClick, id }: Props) {
   const handleClick = () => {
-    if (typeof onClick === 'function' && id) {
+    if (typeof onClick === 'function' && id !== undefined) {
       onClick(id)
     }
   }
