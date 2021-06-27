@@ -54,19 +54,12 @@ function BreedCard({ title, subtitle, onClick, activeId }: { title: string, subt
 }
 
 export default function Breed() {
-  // cant get count from breeding contract since the state is in the factory contract??
   const llamaBreeding = useLlamaBreedingContract()
-  const llamaFactory = useLlamaFactoryContract()
-  const [count, setCount] = useState(0)
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [maleId, setMaleId] = useState<number | undefined>()
   const [femaleId, setFemaleId] = useState<number | undefined>()
   const [activeSex, setActiveSex] = useState('')
-
   const { llamas, getLlamasByOwner, setLlamas } = useLlamaList()
-
-  // TODO: get llamas in this component, then we can use a computer property to get the selected llams
-  // pass in the list as a prop, this is like a select component in element ui, you pass in the options
 
   const allowBreeding = () => {
     return maleId !== undefined && femaleId !== undefined
@@ -102,15 +95,8 @@ export default function Breed() {
     onClose()
   }
 
-  const getCount = async () => {
-    const _count = await llamaFactory?.llamaCount()
-    console.log(llamaBreeding)
-    setCount(_count.toNumber())
-  }
-
   useEffect(() => {
     if (llamaBreeding) {
-      getCount()
       getLlamasByOwner()
     }
 
