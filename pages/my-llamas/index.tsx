@@ -2,21 +2,21 @@ import { useEffect, useState } from 'react'
 import { Box, Container, Button, Heading, Flex, Grid } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import LlamaCard from 'components/LlamaCard'
-import { useLlamaFactoryContract } from 'hooks/useContract'
+import { useLlamaBreedingContract } from 'hooks/useContract'
 import { useWeb3 } from 'context/AppContext'
 
 export default function MyLlamas() {
   const { address } = useWeb3()
   const [llamas, setLlamas] = useState<any[]>([])
-  const llamaFactory = useLlamaFactoryContract()
+  const llamaBreeding = useLlamaBreedingContract()
 
   const getLlamasByOwner = async (address: string) => {
     // TODO: only show llamas belonging to the current owner
     // this will be naive by getting all llamas then filtering by id
-    const count = await llamaFactory?.llamaCount()
+    const count = await llamaBreeding?.llamaCount()
     if (count.gt(0)) {
       for (let i = 0; i < count; i++) {
-        llamaFactory?.llamas(i).then((res: any) => {
+        llamaBreeding?.llamas(i).then((res: any) => {
           const obj = {
             name: res.name,
             dna: res.dna
@@ -28,14 +28,14 @@ export default function MyLlamas() {
   }
 
   useEffect(() => {
-    if (llamaFactory) {
+    if (llamaBreeding) {
       getLlamasByOwner(address)
     }
 
     return (() => {
       setLlamas([])
     })
-  }, [llamaFactory])
+  }, [llamaBreeding])
 
   return (
     <Container maxW="container.lg" mt="32">

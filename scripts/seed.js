@@ -15,11 +15,11 @@ function waitFor(p) {
 
 async function main() {
   for (let i = 0; i < llamas.length; i++) {
-    const llamaFactory = await ethers.getContractAt(
-      'LlamaFactory',
-      contractAddresses.LlamaFactory
+    const llamaBreeding = await ethers.getContractAt(
+      'LlamaBreeding',
+      contractAddresses.LlamaBreeding
     )
-    await waitFor(llamaFactory.createRandomLlama(llamas[i].name))
+    await waitFor(llamaBreeding.createRandomLlama(llamas[i].name))
   }
 }
 

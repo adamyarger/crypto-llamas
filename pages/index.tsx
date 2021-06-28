@@ -9,26 +9,26 @@ import {
   FormControl,
   FormLabel
 } from '@chakra-ui/react'
-import { useLlamaFactoryContract } from 'hooks/useContract'
+import { useLlamaBreedingContract } from 'hooks/useContract'
 
 export default function Home() {
   const { provider } = useWeb3()
   const [name, setName] = useState('')
   const [llamas, setLlamas] = useState<any[]>([])
-  const llamaFactory = useLlamaFactoryContract()
+  const llamaBreeding = useLlamaBreedingContract()
 
   const handleLlamaForm = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     if (name) {
-      await llamaFactory?.createRandomLlama(name)
+      await llamaBreeding?.createRandomLlama(name)
     }
   }
 
   const getLlamas = async () => {
-    const count = await llamaFactory?.llamaCount()
+    const count = await llamaBreeding?.llamaCount()
     if (count.gt(0)) {
       for (let i = 0; i < count; i++) {
-        llamaFactory?.llamas(i).then((res: any) => {
+        llamaBreeding?.llamas(i).then((res: any) => {
           const obj = {
             name: res.name,
             dna: res.dna
@@ -61,15 +61,15 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (llamaFactory) {
+    if (llamaBreeding) {
       // this is being triggered on reload for the most recently created
       // see if it happens with a different listener
-      llamaFactory?.on('NewLlama', onNewLlama)
+      llamaBreeding?.on('NewLlama', onNewLlama)
       return () => {
-        llamaFactory?.off('NewLlama', onNewLlama)
+        llamaBreeding?.off('NewLlama', onNewLlama)
       }
     }
-  }, [llamaFactory])
+  }, [llamaBreeding])
 
   return (
     <div>

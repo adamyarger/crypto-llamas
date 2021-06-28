@@ -3,7 +3,6 @@ import { Contract } from '@ethersproject/contracts'
 import { useWeb3 } from 'context/AppContext'
 import { ethers } from 'ethers'
 import contractAddresses from 'contract-addresses.json'
-import LlamaFactory from 'artifacts/contracts/LlamaFactory.sol/LlamaFactory.json'
 import LlamaBreeding from 'artifacts/contracts/LlamaBreeding.sol/LlamaBreeding.json'
 
 export function useContract(
@@ -25,10 +24,6 @@ export function useContract(
 
     return contract
   }, [provider, address, ABI, withSigner])
-}
-
-export function useLlamaFactoryContract() {
-  return useContract(contractAddresses.LlamaFactory, LlamaFactory.abi)
 }
 
 export function useLlamaBreedingContract() {

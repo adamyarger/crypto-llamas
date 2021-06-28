@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLlamaBreedingContract, useLlamaFactoryContract } from 'hooks/useContract'
+import { useLlamaBreedingContract } from 'hooks/useContract'
 import LlamaSelectModal from 'components/LlamaSelectModal'
 import LlamaCard from 'components/LlamaCard'
 import {
@@ -60,8 +60,6 @@ export default function Breed() {
   const [femaleId, setFemaleId] = useState<number | undefined>()
   const [activeSex, setActiveSex] = useState('')
   const { llamas, getLlamasByOwner, setLlamas } = useLlamaList()
-
-  const factory = useLlamaFactoryContract()
 
   useEffect(() => {
     if (llamaBreeding) {
