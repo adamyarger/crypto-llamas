@@ -1,12 +1,14 @@
-const hre = require("hardhat");
+const hre = require("hardhat")
+const { seed } = require("./seed")
 
 async function main() {
-  const LlamaFactory = await hre.ethers.getContractFactory('LlamaFactory')
-  // in order to pass params to the contract contructor we pass them through deploy
-  const llamaFactory = await LlamaFactory.deploy()
-  await llamaFactory.deployed()
-  console.log('LlamaFactory deployed to:', llamaFactory.address)
-  saveContractAddress('LlamaFactory', llamaFactory)
+  // dont need to deploy this since breeding inherits from it
+  // const LlamaFactory = await hre.ethers.getContractFactory('LlamaFactory')
+  // // in order to pass params to the contract contructor we pass them through deploy
+  // const llamaFactory = await LlamaFactory.deploy()
+  // await llamaFactory.deployed()
+  // console.log('LlamaFactory deployed to:', llamaFactory.address)
+  // saveContractAddress('LlamaFactory', llamaFactory)
 
 
   // breeding
@@ -16,6 +18,12 @@ async function main() {
   await breeding.deployed()
   console.log('LlamaBreeding deployed to:', breeding.address)
   saveContractAddress('LlamaBreeding', breeding)
+
+  try {
+    await seed()
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 function saveContractAddress(name, contract) {

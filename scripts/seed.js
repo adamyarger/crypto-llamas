@@ -23,6 +23,8 @@ async function main() {
   }
 }
 
+module.exports.seed = main
+
 main()
   .then(() => process.exit(0))
   .catch(error => {
